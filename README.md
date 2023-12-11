@@ -1,5 +1,7 @@
 # dapp_voting
 A decentralized voting app for the blockchain lecture at INSA Lyon
+
+```
 my-voting-dapp/
 │
 ├── contracts/
@@ -27,3 +29,4 @@ my-voting-dapp/
 ├── README.md                  # Project documentation
 │
 └── ...                        # Other files and directories as needed
+```
