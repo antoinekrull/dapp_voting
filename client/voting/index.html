@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kandidatenauswahl</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Candidates:</h2>
+
+        <div id="candidates" class="candidate-container">
+            <div class="candidate" onclick="auswahlAnzeigen('Kandidat 1')">Candidate 1</div>
+            <div class="candidate" onclick="auswahlAnzeigen('Kandidat 2')">Candidate 2</div>
+            <div class="candidate" onclick="auswahlAnzeigen('Kandidat 3')">Candidate 3</div>
+            <!-- Weitere Kandidaten hier hinzufügen -->
+        </div>
+
+        <div id="auswahl"></div>
+    </div>
+
+    <script src="./index.js"></script>
+</body>
+</html>
