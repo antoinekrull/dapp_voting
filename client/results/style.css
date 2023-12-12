@@ -1,0 +1,51 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    width: 300px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.candidate-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.candidate {
+    padding: 8px;
+    margin-bottom: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.candidate:hover {
+    background-color: #f0f0f0;
+}
+
+#chart-container {
+    margin-top: 16px;
+}
+
+#chart {
+    display: flex;
+    flex-direction: row;
+}
+
+.bar {
+    height: 20px;
+    margin-right: 8px;
+}
+
+#winner {
+    margin-top: 16px;
+}
