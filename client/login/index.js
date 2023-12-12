@@ -1,7 +1,5 @@
 function submitForm() {
-    var username = document.getElementById("username").value;
-    var password = document.getElementById("password").value;
+    var address = document.getElementById("address").value;
 
-    console.log("Username: " + username);
-    console.log("Password: " + password);
+    console.log("address: " + address);
 }
