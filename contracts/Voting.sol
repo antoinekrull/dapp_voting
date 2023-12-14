@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: CC-BY-NC-SA-4.0
-pragma solidity ^0.8.0;
+pragma solidity 0.5.2;
 
 contract Voting {
 
@@ -30,7 +30,7 @@ contract Voting {
     uint public candidatesCount;
 
     // Constructor
-    constructor() {
+    constructor() public{
         owner = msg.sender; // Set the contract deployer as the owner
         addCandidate("Joe Biden");
         addCandidate("Donald Trump");
