@@ -1,7 +1,14 @@
 // SPDX-License-Identifier: CC-BY-NC-SA-4.0
 pragma solidity 0.5.2;
 
+import "./MockOracle.sol";
+
 contract Voting {
+
+
+    MockOracle public oracle;
+
+
 
     // Define the structure of a candidate
     struct Candidate {
@@ -15,6 +22,9 @@ contract Voting {
 
     // Store accounts that have voted
     mapping(address => bool) public voters;
+    mapping(bytes32 => bool) public votedKeys;
+
+
 
     // Contract owner
     address public owner;
@@ -30,7 +40,9 @@ contract Voting {
     uint public candidatesCount;
 
     // Constructor
-    constructor() public{
+    constructor(address oracleAddress) public{
+
+        oracle = MockOracle(oracleAddress);
         owner = msg.sender; // Set the contract deployer as the owner
         addCandidate("Joe Biden");
         addCandidate("Donald Trump");
@@ -43,6 +55,9 @@ contract Voting {
         _;
     }
     
+    function getKey() public view returns (bytes32) {
+        return oracle.generateKeyUsingAddress(msg.sender);
+    }
 
     // Set voting start time and duration
     function setVotingPhase(uint _start, uint _duration) public onlyOwner {
@@ -59,12 +74,14 @@ contract Voting {
     }
 
     // Public function to vote
-    function vote(uint _candidateId) public {
+    function vote(uint _candidateId, bytes32 key) public {
         require(block.timestamp >= votingStartTime && block.timestamp <= votingStartTime + votingDuration, "Voting is not active");
-        require(!voters[msg.sender], "Already voted");
+        //require(!voters[msg.sender], "Already voted");
+        require(!votedKeys[key], "Already voted");
         require(_candidateId > 0 && _candidateId <= candidatesCount, "Invalid candidate");
 
-        voters[msg.sender] = true;
+        //voters[msg.sender] = true;
+        votedKeys[key] = true;
         candidates[_candidateId].voteCount++;
     }
 
