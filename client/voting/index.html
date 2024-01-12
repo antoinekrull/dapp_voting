@@ -15,8 +15,20 @@
             <div class="candidate" onclick="auswahlAnzeigen('Kandidat 2')">Candidate 2</div>
             <div class="candidate" onclick="auswahlAnzeigen('Kandidat 3')">Candidate 3</div>
         </div>
-
-        <div id="auswahl"></div>
+        <button onclick="startElections()">Start Elections</button>
+        <div id="auswahl-container">
+            <h3>Selected Candidate:</h3>
+            <div id="auswahl"></div>
+        </div>
+        <div id="chart-container">
+            <h3>Vote Count</h3>
+            <div id="chart">
+                <!-- Chart bars will be dynamically added here -->
+            </div>
+        </div>
+    
+        <div id="winner"></div>
+        <div id="election-status">Waiting for elections to start</div>
     </div>
 
     <script src="./index.js"></script>
