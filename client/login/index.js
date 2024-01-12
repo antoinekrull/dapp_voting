@@ -4,8 +4,8 @@ function submitForm() {
     var address = document.getElementById("address").value;
     var errorMessageElement = document.getElementById("error-message");
     if(!isValidBlockchainAddress(address)){
-        errorMessageElement.innerHTML = "Eingabe ist keine gültige Blockchain-Adresse.";
-        errorMessageElement.style.display = "block"; // Zeige die Fehlermeldung an
+        errorMessageElement.innerHTML = "Input is not valid ethereum address.";
+        errorMessageElement.style.display = "block";
         return;
     }
     window.location.href = '../voting/index.html';
