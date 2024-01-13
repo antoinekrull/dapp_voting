@@ -3,22 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kandidatenauswahl</title>
+    <title>Candidate selection</title>
     <link rel="stylesheet" href="./style.css">
 </head>
-<body>
+<body onload="displayCandidates()">
     <div class="container">
         <h2>Candidates:</h2>
+        <!--containes the candidates, is filled by displayCandidates()-->
+        <div id="candidates" class="candidate-container"></div>
 
-        <div id="candidates" class="candidate-container">
-            <div class="candidate" onclick="auswahlAnzeigen('Kandidat 1')">Candidate 1</div>
-            <div class="candidate" onclick="auswahlAnzeigen('Kandidat 2')">Candidate 2</div>
-            <div class="candidate" onclick="auswahlAnzeigen('Kandidat 3')">Candidate 3</div>
-        </div>
         <button onclick="startElections()">Start Elections</button>
-        <div id="auswahl-container">
+        <div id="selection-container">
             <h3>Selected Candidate:</h3>
-            <div id="auswahl"></div>
+            <div id="selection"></div>
         </div>
         <div id="chart-container">
             <h3>Vote Count</h3>

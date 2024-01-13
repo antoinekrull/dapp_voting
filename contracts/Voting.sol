@@ -59,6 +59,26 @@ contract Voting {
         return oracle.generateKeyUsingAddress(msg.sender);
     }
 
+    // safes the user address that a user puts in the login text box as input
+    function safeUserAddress() public {
+        // checks if the user already exists
+        if(voters[msg.sender] == 0){
+            voters[msg.sender] = false;
+        }
+    }
+
+    function getCandidateNames() public view returns (string[] memory){
+        uint candidateCount = candidates.length;
+
+        string[] memory candidateNames = new string[](candidateCount);
+
+        for (uint i = 0; i < candidateCount; i++) {
+            candidateNames[i] = candidates[i].name;
+        }
+
+        return candidateNames;
+    }
+
     // Set voting start time and duration
     function setVotingPhase(uint _start, uint _duration) public onlyOwner {
         require(!isVotingActive, "Voting is already active");
