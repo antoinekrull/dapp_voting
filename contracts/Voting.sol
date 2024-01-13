@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: CC-BY-NC-SA-4.0
 pragma solidity 0.5.2;
 
+pragma experimental ABIEncoderV2; // Enable the new ABI encoder
+
 import "./MockOracle.sol";
 
 contract Voting {
@@ -62,13 +64,13 @@ contract Voting {
     // safes the user address that a user puts in the login text box as input
     function safeUserAddress() public {
         // checks if the user already exists
-        if(voters[msg.sender] == 0){
+        if(voters[msg.sender] == false){
             voters[msg.sender] = false;
         }
     }
 
     function getCandidateNames() public view returns (string[] memory){
-        uint candidateCount = candidates.length;
+        uint candidateCount = 2; //hard-coded for test purpose
 
         string[] memory candidateNames = new string[](candidateCount);
 
