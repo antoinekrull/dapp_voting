@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-import contractInfo from '../../contracts/Voting.sol';
+// import contractInfo from '../contracts/Voting.sol';
 const web3 = new Web3(Web3.givenProvider);
 
 // address of the contract
@@ -13,7 +13,7 @@ const contract = new web3.eth.Contract(contractABI, contractAddress);
 
 var electionsStarted = false; // Variable to track whether elections have started
 
-function startElections() {
+export function startElections() {
     electionsStarted = true;
     document.getElementById("election-status").style.display = "none"; // Hide the status message
 }
@@ -27,8 +27,7 @@ function showSelection(selectedCandidate) {
     auswahlElement.innerHTML = "Selected candidate: " + selectedCandidate;
 }
 
-// be sure that the candidates element exist when method is called onload!
-async function displayCandidates() {
+export const displayCandidates = async () => {
     try {
         const result = await contract.methods.getCandidateNames().call();
 

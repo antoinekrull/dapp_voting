@@ -1,0 +1,39 @@
+body {
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+}
+
+.container {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 300px;
+  padding: 20px;
+  box-shadow: 0 0 10px #0000001a;
+}
+
+.candidate-container {
+  flex-direction: column;
+  display: flex;
+}
+
+.candidate {
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 8px;
+  padding: 8px;
+}
+
+.candidate:hover {
+  background-color: #f0f0f0;
+}
+
+#auswahl {
+  margin-top: 16px;
+}
+
+/*# sourceMappingURL=voting.971a3af4.css.map */

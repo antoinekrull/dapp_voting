@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Candidate selection</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./voting.css">
 </head>
-<body onload="displayCandidates()">
+<body>
     <div class="container">
         <h2>Candidates:</h2>
         <!--containes the candidates, is filled by displayCandidates()-->
@@ -28,6 +28,12 @@
         <div id="election-status">Waiting for elections to start</div>
     </div>
 
-    <script src="./index.js"></script>
+    <script type="module">
+        import {displayCandidates} from "./voting.js";
+        window.displayCandidates = displayCandidates;
+        displayCandidates();
+        import {startElections} from "./voting.js";
+        window.startElections = startElections;
+    </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-import contractInfo from '../../contracts/Voting.sol';
+// import contractInfo from '../contracts/Voting.sol';
 const web3 = new Web3(Web3.givenProvider);
 
 // address of the contract
@@ -11,7 +11,7 @@ const contractABI = contractInfo.abi;
 // Get a contract instance
 const contract = new web3.eth.Contract(contractABI, contractAddress);
 
-export function submitForm(){
+export function blubb(){
     var address = document.getElementById("address").value;
     var errorMessageElement = document.getElementById("error-message");
     if(!isValidBlockchainAddress(address)){
@@ -20,8 +20,7 @@ export function submitForm(){
         return;
     }
     safeAddressInContract(address);
-    window.location.href = '../voting/index.html';
-    console.log("address: " + address);
+    window.location.href = './voting.html';
 }
 
 function isValidBlockchainAddress(address) {
@@ -46,7 +45,3 @@ function safeAddressInContract(address){
             console.error('Error:', error);
         });
 }
-
-// document.addEventListener('DOMContentLoaded', function () {
-//     document.querySelector('button').addEventListener('click', submitForm);
-// });
