@@ -18,6 +18,9 @@
         </form>
     </div>
 
-    <script src="./index.js"></script>
+    <script type="module">
+        import {submitForm} from "./index.js";
+        window.submitForm = submitForm;
+    </script>
 </body>
 </html>
