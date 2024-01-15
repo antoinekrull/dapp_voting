@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-// import contractInfo from '../contracts/Voting.sol';
+import contractInfo from '../build/contracts/Voting.json';
 const web3 = new Web3(Web3.givenProvider);
 
 // address of the contract
