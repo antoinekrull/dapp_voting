@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 import contractInfo from '../build/contracts/Voting.json';
-const web3 = new Web3(Web3.givenProvider);
+const web3 = new Web3(Web3.givenProvider || 'http://localhost:7545');
 
 // address of the contract
 const contractAddress = contractInfo.networks['5777'].address;
@@ -21,7 +21,7 @@ export function submitForm(){
     }
     safeAddressInContract(address);
     window.location.href = './voting.html';
-}
+}    
 
 function isValidBlockchainAddress(address) {
     // eth address consists of 40 hexadecimal signs
@@ -44,4 +44,31 @@ function safeAddressInContract(address){
         .on('error', function (error) {
             console.error('Error:', error);
         });
+}
+
+async function getOracleKey() {
+    try {
+      const accounts = await web3.eth.getAccounts();
+      // is the address of the browser who uses the contract alwyas at accounts[0]?
+      const senderAddress = accounts[0];
+
+      const key = await contract.methods.getKey().call({ from: senderAddress });
+  
+      console.log('Oracle Key:', key);
+      return key;
+    } catch (error) {
+      console.error('Error during the oracle key request:', error);
+    }
+}
+
+export const getAndSetOracleKey = async () => {
+    try {
+        const oracleKey = await getOracleKey();
+
+        document.getElementById('statekey').value = oracleKey;
+
+        console.log('Oracle Key set as input:', oracleKey);
+    } catch (error) {
+        console.error('Error during setting the oracleKey as input:', error);
+    }
 }
