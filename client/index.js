@@ -12,26 +12,21 @@ const contractABI = contractInfo.abi;
 const contract = new web3.eth.Contract(contractABI, contractAddress);
 
 export function submitForm(){
-    var address = document.getElementById("address").value;
+    var statekey = document.getElementById("statekey").value;
     var errorMessageElement = document.getElementById("error-message");
-    if(!isValidBlockchainAddress(address)){
-        errorMessageElement.innerHTML = "Input is not valid ethereum address.";
+    // length of the oracle key
+    const expectedLength = 64;
+    if(statekey.length != expectedLength){
+        errorMessageElement.innerHTML = "Input is not valid oracle key.";
         errorMessageElement.style.display = "block";
         return;
     }
-    safeAddressInContract(address);
+    safeStateKeyInContract(statekey);
     window.location.href = './voting.html';
-}    
-
-function isValidBlockchainAddress(address) {
-    // eth address consists of 40 hexadecimal signs
-    const ethAddressRegex = /^(0x)?[0-9a-fA-F]{40}$/;
-
-    return ethAddressRegex.test(address);
 }
 
-function safeAddressInContract(address){
-    contract.methods.safeUserAddress(address).send({ from: address })
+function safeStateKeyInContract(statekey){
+    contract.methods.safeStateKey(statekey).send({ from: address })
         .on('transactionHash', function (hash) {
             console.log('Transaction Hash:', hash);
         })

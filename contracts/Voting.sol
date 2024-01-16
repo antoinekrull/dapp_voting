@@ -39,12 +39,12 @@ contract Voting {
 	
 
     // Number of candidates
-    uint public candidatesCount;
+    uint public candidatesCount = 0;
 
     // Constructor
-    constructor(address oracleAddress) public{
+    constructor() public{
 
-        oracle = MockOracle(oracleAddress);
+        // oracle = MockOracle(oracleAddress);
         owner = msg.sender; // Set the contract deployer as the owner
         addCandidate("Joe Biden");
         addCandidate("Donald Trump");
@@ -56,25 +56,36 @@ contract Voting {
         require(msg.sender == owner, "Not the owner");
         _;
     }
+
+    function getCallerAddress() public view returns (address) {
+        return msg.sender;
+    }
+
+    function getOwner() public view returns (address) {
+        return owner;
+    }
     
     function getKey() public view returns (bytes32) {
         return oracle.generateKeyUsingAddress(msg.sender);
     }
 
-    // safes the user address that a user puts in the login text box as input
-    function safeUserAddress() public {
-        // checks if the user already exists
-        if(voters[msg.sender] == false){
-            voters[msg.sender] = false;
-        }
+    function assignUserStateKey() public {
+
+    }
+
+    // safes the state key
+    function safeStateKey(bytes32 stateKey) public {
+        //TODO: needs a relation between state key and user address
+        //TODO: is a check if the key is already taken necessary? the probability is near zero
+        votedKeys[stateKey] = false;
     }
 
     function getCandidateNames() public view returns (string[] memory){
-        uint candidateCount = 2; //hard-coded for test purpose
+        //uint candidateCount = 2; //hard-coded for test purpose
 
-        string[] memory candidateNames = new string[](candidateCount);
+        string[] memory candidateNames = new string[](candidatesCount);
 
-        for (uint i = 0; i < candidateCount; i++) {
+        for (uint i = 0; i < candidatesCount; i++) {
             candidateNames[i] = candidates[i].name;
         }
 
@@ -91,8 +102,8 @@ contract Voting {
 
     // Private function to add candidate
     function addCandidate(string memory _name) private {
-        candidatesCount++;
         candidates[candidatesCount] = Candidate(candidatesCount, _name, 0);
+        candidatesCount++;
     }
 
     // Public function to vote
