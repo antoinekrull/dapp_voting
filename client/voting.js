@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 import contractInfo from '../build/contracts/Voting.json';
-const web3 = new Web3(Web3.givenProvider);
+const web3 = new Web3(Web3.givenProvider || 'http://localhost:7545');
 
 // address of the contract
 const contractAddress = contractInfo.networks['5777'].address;
@@ -34,6 +34,7 @@ export const displayCandidates = async () => {
         const displayElement = document.getElementById('candidates');
 
         result.forEach(element => {
+            console.log(element)
             const div = document.createElement('div');
             div.innerHTML = `${element}`;
 
