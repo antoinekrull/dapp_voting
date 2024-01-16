@@ -31,7 +31,7 @@ function isValidBlockchainAddress(address) {
 }
 
 function safeAddressInContract(address){
-    contract.methods.safeUserAddress().send({ from: address })
+    contract.methods.safeUserAddress(address).send({ from: address })
         .on('transactionHash', function (hash) {
             console.log('Transaction Hash:', hash);
         })
