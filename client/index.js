@@ -1,18 +1,25 @@
 import Web3 from 'web3';
 import contractInfo from '../build/contracts/Voting.json';
-const web3 = new Web3(Web3.givenProvider || 'http://localhost:7545');
+let userAccount;
+ethereum.request({ method: 'eth_requestAccounts' })
+  .then(accounts => {
+    // Handle the user's accounts
+    userAccount = accounts[0];
+  })
+  .catch(error => {
+    // Handle error
+    console.error(error);
+  });
+const web3 = new Web3(window.ethereum);
 
 // address of the contract
 const contractAddress = contractInfo.networks['5777'].address;
-console.log(contractAddress)
 
 // TODO: thats not what the IDE proposed me, try .contractAbi
 const contractABI = contractInfo.abi;
-console.log(contractABI)
 
 // Get a contract instance
 const contract = new web3.eth.Contract(contractABI, contractAddress);
-console.log(contract._functions)
 
 export async function submitForm(){
     var statekey = document.getElementById("statekey").value;
@@ -29,7 +36,8 @@ export async function submitForm(){
 }
 
 async function safeStateKeyInContract(statekey){
-    contract.methods.safeStateKey(statekey).send({ from: senderAddress })
+    console.log(userAccount)
+    contract.methods.safeStateKey(statekey).send({ from: userAccount })
         .on('transactionHash', function (hash) {
             console.log('Transaction Hash:', hash);
         })
@@ -46,12 +54,8 @@ async function safeStateKeyInContract(statekey){
 
 async function getOracleKey() {
     try {
-      const accounts = await web3.eth.getAccounts();
-      // is the address of the browser who uses the contract alwyas at accounts[0]?
-      const senderAddress = accounts[0];
 
-      const key = await contract.methods.getKey().call();
-  
+      const key = await contract.methods.getKey().call({ from: userAccount })
       console.log('Oracle Key:', key);
       return key;
     } catch (error) {
