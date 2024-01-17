@@ -19,7 +19,6 @@ export function startElections() {
 }
 
 function showSelection(selectedCandidate) {
-    console.log(selectedCandidate)
     if (!electionsStarted) {
         return; // Do nothing if elections haven't started
     }
@@ -34,9 +33,9 @@ export const displayCandidates = async () => {
         const displayElement = document.getElementById('candidates');
 
         result.forEach(element => {
-            console.log(element)
             const div = document.createElement('div');
             div.innerHTML = `${element}`;
+            div.classList.add('candidate');
 
             displayElement.appendChild(div);
 
@@ -47,4 +46,12 @@ export const displayCandidates = async () => {
     } catch (error) {
         console.error('Error:', error);
     }
+}
+
+export const isOwner = async () => {
+    const ownerAddress = await contract.methods.getCandidateNames().call();
+}
+
+export const executeKeyProcess = async () => {
+    const ownerAddress = await contract.methods.getCandidateNames().call();
 }
