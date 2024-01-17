@@ -42,9 +42,9 @@ contract Voting {
     uint public candidatesCount = 0;
 
     // Constructor
-    constructor() public{
+    constructor(address oracleAddress) public{
 
-        // oracle = MockOracle(oracleAddress);
+        oracle = MockOracle(oracleAddress);
         owner = msg.sender; // Set the contract deployer as the owner
         addCandidate("Joe Biden");
         addCandidate("Donald Trump");
