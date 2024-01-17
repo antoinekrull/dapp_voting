@@ -78,6 +78,7 @@ contract Voting {
         //TODO: needs a relation between state key and user address
         //TODO: is a check if the key is already taken necessary? the probability is near zero
         votedKeys[stateKey] = false;
+        voters[msg.sender] = false;
     }
 
     function getCandidateNames() public view returns (string[] memory){
