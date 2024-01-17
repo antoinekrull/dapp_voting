@@ -4,29 +4,32 @@ const web3 = new Web3(Web3.givenProvider || 'http://localhost:7545');
 
 // address of the contract
 const contractAddress = contractInfo.networks['5777'].address;
+console.log(contractAddress)
 
 // TODO: thats not what the IDE proposed me, try .contractAbi
 const contractABI = contractInfo.abi;
+console.log(contractABI)
 
 // Get a contract instance
 const contract = new web3.eth.Contract(contractABI, contractAddress);
+console.log(contract._functions)
 
-export function submitForm(){
+export async function submitForm(){
     var statekey = document.getElementById("statekey").value;
     var errorMessageElement = document.getElementById("error-message");
-    // length of the oracle key
-    const expectedLength = 64;
+    // length of the oracle key + 2 for leading 0x
+    const expectedLength = 66;
     if(statekey.length != expectedLength){
         errorMessageElement.innerHTML = "Input is not valid oracle key.";
         errorMessageElement.style.display = "block";
         return;
     }
-    safeStateKeyInContract(statekey);
+    await safeStateKeyInContract(statekey);
     window.location.href = './voting.html';
 }
 
-function safeStateKeyInContract(statekey){
-    contract.methods.safeStateKey(statekey).send({ from: address })
+async function safeStateKeyInContract(statekey){
+    contract.methods.safeStateKey(statekey).send({ from: senderAddress })
         .on('transactionHash', function (hash) {
             console.log('Transaction Hash:', hash);
         })
@@ -47,7 +50,7 @@ async function getOracleKey() {
       // is the address of the browser who uses the contract alwyas at accounts[0]?
       const senderAddress = accounts[0];
 
-      const key = await contract.methods.getKey().call({ from: senderAddress });
+      const key = await contract.methods.getKey().call();
   
       console.log('Oracle Key:', key);
       return key;
