@@ -15,6 +15,7 @@ var electionsStarted = false; // Variable to track whether elections have starte
 
 export function startElections() {
     electionsStarted = true;
+    showCountdown(5 * 60 + 30);
     document.getElementById("election-status").style.display = "none"; // Hide the status message
 }
 
@@ -48,10 +49,34 @@ export const displayCandidates = async () => {
     }
 }
 
-export const isOwner = async () => {
-    const ownerAddress = await contract.methods.getCandidateNames().call();
+export function showCountdown(duration) {
+    const countdownElement = document.createElement('div');
+    countdownElement.id = 'countdown';
+    document.body.appendChild(countdownElement);
+
+    const startTime = Date.now();
+    const endTime = startTime + duration * 1000;
+
+    function updateCountdown() {
+        const currentTime = Date.now();
+        const remainingTime = Math.max(0, endTime - currentTime);
+        const minutes = Math.floor(remainingTime / (1000 * 60));
+        const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+        // puts time in min:sec format
+        const formattedTime = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        countdownElement.innerText = `Countdown: ${formattedTime}`;
+
+        if (remainingTime > 0) {
+            requestAnimationFrame(updateCountdown);
+        } else {
+            countdownElement.innerText = 'Elections are over!';
+        }
+    }
+
+    updateCountdown();
 }
 
-export const executeKeyProcess = async () => {
+export const isOwner = async () => {
     const ownerAddress = await contract.methods.getCandidateNames().call();
 }
