@@ -138,5 +138,20 @@ contract Voting {
         return (startTime, endTime);
     }
 
+
+    function getAllCandidates() public view returns (Candidate[] memory) {
+
+        // TODO: add constraint and make sure to show a message on results page when voting is still active
+        //require(isVotingActive, "Voting is still active.");
+        Candidate[] memory allCandidates = new Candidate[](candidatesCount);
+        
+        for (uint i = 0; i < candidatesCount; i++) {
+            Candidate storage candidate = candidates[i];
+            allCandidates[i] = candidate;
+        }
+
+        return allCandidates;
+    }
+
 }
 
