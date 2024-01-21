@@ -9,6 +9,7 @@ contract Voting {
 
 
     MockOracle public oracle;
+    event IsVotingActive(bool isVotingActive);
 
 
 
@@ -28,13 +29,14 @@ contract Voting {
 
 
 
+
     // Contract owner
     address public owner;
 
     // Voting phase control
     uint public votingStartTime;
     uint public votingDuration; // in seconds
-    bool private isVotingActive; // Private variable to track voting status
+    bool private isVotingActive = false; // Private variable to track voting status
     uint public time; // test UNIX timestamp
 	
 
@@ -93,12 +95,15 @@ contract Voting {
         return candidateNames;
     }
 
-    // Set voting start time and duration
-    function setVotingPhase(uint _start, uint _duration) public onlyOwner {
-        require(!isVotingActive, "Voting is already active");
-        votingStartTime = _start;
-        votingDuration = _duration;
-        isVotingActive = true;
+    // Set voting start time and duration (TODO: make callable only by contract owner)
+    function setVotingPhase(uint _start, uint _duration) public {
+        // is not callable twice when a require is used, therefore checked with if
+        if(!isVotingActive){
+            votingStartTime = _start;
+            votingDuration = _duration;
+            isVotingActive = true;
+            emit IsVotingActive(true);
+        }
     }
 
     // Private function to add candidate
@@ -131,7 +136,7 @@ contract Voting {
         startTime = votingStartTime;
         endTime = votingStartTime + votingDuration;
         return (startTime, endTime);
-}
+    }
 
 }
 
