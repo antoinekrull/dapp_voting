@@ -50,7 +50,7 @@ function updateChart(candidates, selectedCandidate) {
   candidates.forEach((candidate) => {
     var bar = document.createElement("div");
     bar.className = "bar";
-    bar.style.height = voteCount * 10 + "px"; // Adjust height based on vote count
+    bar.style.height = candidate.voteCount * 10 + "px"; // Adjust height based on vote count
     bar.title = `${candidate.name}: ${candidate.voteCount} votes`;
     chartContainer.appendChild(bar);
   });
