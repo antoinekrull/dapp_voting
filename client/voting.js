@@ -1,22 +1,34 @@
 import Web3 from 'web3';
 import contractInfo from '../build/contracts/Voting.json';
-const web3 = new Web3(Web3.givenProvider || 'http://localhost:7545');
-
+let userAccount;
+ethereum.request({ method: 'eth_requestAccounts' })
+  .then(accounts => {
+    // Handle the user's accounts
+    userAccount = accounts[0];
+  })
+  .catch(error => {
+    // Handle error
+    console.error(error);
+  });
+const web3 = new Web3(window.ethereum);
 // address of the contract
 const contractAddress = contractInfo.networks['5777'].address;
 
 // TODO: thats not what the IDE proposed me, try .contractAbi
 const contractABI = contractInfo.abi;
-
 // Get a contract instance
 const contract = new web3.eth.Contract(contractABI, contractAddress);
-
 var electionsStarted = false; // Variable to track whether elections have started
 
-export function startElections() {
+export async function startElections() {
+    const startTimestamp = Math.floor(Date.now() / 1000); // current time in seconds
+    const durationInMinutes = 1;
+    const endTimestamp = startTimestamp + (durationInMinutes * 60);
+
     electionsStarted = true;
-    showCountdown(5 * 60 + 30);
+    contract.methods.setVotingPhase(startTimestamp, endTimestamp).send({ from: userAccount });
     document.getElementById("election-status").style.display = "none"; // Hide the status message
+    showCountdown(durationInMinutes * 60);
 }
 
 function showSelection(selectedCandidate) {
@@ -49,7 +61,7 @@ export const displayCandidates = async () => {
     }
 }
 
-export function showCountdown(duration) {
+function showCountdown(duration) {
     const countdownElement = document.createElement('div');
     countdownElement.id = 'countdown';
     document.body.appendChild(countdownElement);
