@@ -1,6 +1,7 @@
 import Web3 from 'web3';
 import contractInfo from '../build/contracts/Voting.json';
 let userAccount;
+let votedCandidate;
 ethereum.request({ method: 'eth_requestAccounts' })
   .then(accounts => {
     // Handle the user's accounts
@@ -37,6 +38,7 @@ function showSelection(selectedCandidate) {
     }
     var auswahlElement = document.getElementById("selection");
     auswahlElement.innerHTML = "Selected candidate: " + selectedCandidate;
+    votedCandidate = selectedCandidate;
 }
 
 export const displayCandidates = async () => {
@@ -82,7 +84,7 @@ function showCountdown(duration) {
         if (remainingTime > 0) {
             requestAnimationFrame(updateCountdown);
         } else {
-            countdownElement.innerText = 'Elections are over!';
+            window.location.href = './results.html';
         }
     }
 

@@ -17,7 +17,6 @@ const contractAddress = contractInfo.networks['5777'].address;
 
 // TODO: thats not what the IDE proposed me, try .contractAbi
 const contractABI = contractInfo.abi;
-
 // Get a contract instance
 const contract = new web3.eth.Contract(contractABI, contractAddress);
 
@@ -37,7 +36,7 @@ export async function submitForm(){
 
 async function safeStateKeyInContract(statekey){
     console.log(userAccount)
-    contract.methods.safeStateKey(statekey).send({ from: userAccount })
+    contract.methods.createVoter(statekey).send({ from: userAccount })
         .on('transactionHash', function (hash) {
             console.log('Transaction Hash:', hash);
         })

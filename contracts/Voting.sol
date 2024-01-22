@@ -20,14 +20,14 @@ contract Voting {
         uint voteCount;
     }
 
-    // Store candidates
-    mapping(uint => Candidate) public candidates;
+    struct Voter {
+        address voterAddress;
+        bytes32 key;
+        bool hasVoted;
+    }
 
-    // Store accounts that have voted
-    mapping(address => bool) public voters;
-    mapping(bytes32 => bool) public votedKeys;
-
-
+    Voter[] public voters;
+    Candidate[] public candidates;
 
 
     // Contract owner
@@ -75,12 +75,14 @@ contract Voting {
 
     }
 
-    // safes the state key
-    function safeStateKey(bytes32 stateKey) public {
-        //TODO: needs a relation between state key and user address
-        //TODO: is a check if the key is already taken necessary? the probability is near zero
-        votedKeys[stateKey] = false;
-        voters[msg.sender] = false;
+    // creates a new Voter with the according state key
+    function createVoter(bytes32 stateKey) public {
+        Voter memory newVoter = Voter({
+            voterAddress: msg.sender,
+            key: stateKey,
+            hasVoted: false
+        });
+        voters.push(newVoter);
     }
 
     function getCandidateNames() public view returns (string[] memory){
@@ -108,26 +110,65 @@ contract Voting {
 
     // Private function to add candidate
     function addCandidate(string memory _name) private {
-        candidates[candidatesCount] = Candidate(candidatesCount, _name, 0);
+        Candidate memory newCandidate = Candidate({
+            id: candidatesCount,
+            name: _name,
+            voteCount: 0
+        });
+        candidates.push(newCandidate);
         candidatesCount++;
     }
 
+    function userVoted(bytes32 _key) public view returns (bool){
+        for (uint i = 0; i < voters.length; i++) {
+            if (voters[i].key == _key && voters[i].hasVoted == true) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function candidateExists(string memory _name) public view returns (bool){
+        for (uint i = 0; i < candidates.length; i++) {
+            // needs type conversion to be comparable
+            if (keccak256(abi.encodePacked(candidates[i].name)) == keccak256(abi.encodePacked(_name))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // Public function to vote
-    function vote(uint _candidateId, bytes32 key) public {
+    function vote(string memory _candidateName, bytes32 _key) public {
         require(block.timestamp >= votingStartTime && block.timestamp <= votingStartTime + votingDuration, "Voting is not active");
         //require(!voters[msg.sender], "Already voted");
-        require(!votedKeys[key], "Already voted");
-        require(_candidateId > 0 && _candidateId <= candidatesCount, "Invalid candidate");
+        require(!userVoted(_key), "Already voted");
+        require(candidateExists(_candidateName), "Invalid candidate");
 
-        //voters[msg.sender] = true;
-        votedKeys[key] = true;
-        candidates[_candidateId].voteCount++;
+        // Marks the key as voted
+        for (uint i = 0; i < voters.length; i++) {
+            if (voters[i].key == _key) {
+                voters[i].hasVoted = true;
+            }
+        }
+        // Raises the candidate vote count
+        for (uint i = 0; i < candidates.length; i++) {
+            // needs type conversion to be comparable
+            if (keccak256(abi.encodePacked(candidates[i].name)) == keccak256(abi.encodePacked(_candidateName))) {
+                candidates[i].voteCount++;
+            }
+        }
     }
 
     // Get vote count for a candidate
-    function getVoteCount(uint _candidateId) public view returns (uint) {
-        require(_candidateId > 0 && _candidateId <= candidatesCount, "Invalid candidate");
-        return candidates[_candidateId].voteCount;
+    function getVoteCount(string memory _candidateName) public view returns (uint) {
+        require(candidateExists(_candidateName), "Invalid candidate");
+        for (uint i = 0; i < candidates.length; i++) {
+            // needs type conversion to be comparable
+            if (keccak256(abi.encodePacked(candidates[i].name)) == keccak256(abi.encodePacked(_candidateName))) {
+                return candidates[i].voteCount;
+            }
+        }
     }
     // Function to get the start and end times of the voting phase as uint values (UNIX timestamp in seconds)
     function getVotingPhase() public view returns (uint startTime, uint endTime) {
