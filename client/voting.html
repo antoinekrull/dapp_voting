@@ -13,6 +13,7 @@
         <div id="candidates" class="candidate-container"></div>
 
         <button onclick="startElections()">Start Elections</button>
+        <button onclick="checkIsVotingActive()">isvotingactive</button>
         <div id="selection-container">
             <h3>Selected Candidate:</h3>
             <div id="selection"></div>
@@ -34,6 +35,8 @@
         displayCandidates();
         import {startElections} from "./voting.js";
         window.startElections = startElections;
+        import {checkIsVotingActive} from "./voting.js";
+        window.checkIsVotingActive = checkIsVotingActive;
     </script>
 </body>
 </html>
