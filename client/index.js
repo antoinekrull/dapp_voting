@@ -35,7 +35,6 @@ export async function submitForm(){
 }
 
 async function safeStateKeyInContract(statekey){
-    console.log(userAccount)
     contract.methods.createVoter(statekey).send({ from: userAccount })
         .on('transactionHash', function (hash) {
             console.log('Transaction Hash:', hash);
@@ -53,7 +52,6 @@ async function safeStateKeyInContract(statekey){
 
 async function getOracleKey() {
     try {
-
       const key = await contract.methods.getKey().call({ from: userAccount })
       console.log('Oracle Key:', key);
       return key;
