@@ -2,6 +2,7 @@ import Web3 from 'web3';
 import contractInfo from '../build/contracts/Voting.json';
 let userAccount;
 let votedCandidate;
+const durationInMinutes = 1;
 ethereum.request({ method: 'eth_requestAccounts' })
   .then(accounts => {
     // Handle the user's accounts
@@ -23,7 +24,6 @@ var electionsStarted = false; // Variable to track whether elections have starte
 
 export async function startElections() {
     const startTimestamp = Math.floor(Date.now() / 1000); // current time in seconds
-    const durationInMinutes = 1;
     const endTimestamp = startTimestamp + (durationInMinutes * 60);
 
     electionsStarted = true;
@@ -63,7 +63,8 @@ export const displayCandidates = async () => {
     }
 }
 
-function showCountdown(duration) {
+async function showCountdown(duration) {
+    // this function does way more then just showing the coundown, needs rework if time is left
     const countdownElement = document.createElement('div');
     countdownElement.id = 'countdown';
     document.body.appendChild(countdownElement);
@@ -71,7 +72,7 @@ function showCountdown(duration) {
     const startTime = Date.now();
     const endTime = startTime + duration * 1000;
 
-    function updateCountdown() {
+    async function updateCountdown() {
         const currentTime = Date.now();
         const remainingTime = Math.max(0, endTime - currentTime);
         const minutes = Math.floor(remainingTime / (1000 * 60));
@@ -84,6 +85,7 @@ function showCountdown(duration) {
         if (remainingTime > 0) {
             requestAnimationFrame(updateCountdown);
         } else {
+            await voteForCandidate(votedCandidate);
             window.location.href = './results.html';
         }
     }
@@ -91,6 +93,24 @@ function showCountdown(duration) {
     updateCountdown();
 }
 
+async function voteForCandidate(votedCandidate){
+    const usersKey = await getUsersKey();
+    await contract.methods.vote(votedCandidate, usersKey).send({from: userAccount});
+}
+
+async function getUsersKey(){
+    const userKey = await contract.methods.getUsersKey().call({from: userAccount});
+    return userKey;
+}
+
 export const isOwner = async () => {
     const ownerAddress = await contract.methods.getCandidateNames().call();
+}
+
+export async function checkIsVotingActive(){
+    const isVotingActive = await contract.methods.getIsVotingActive().call();
+    if (isVotingActive){
+        showCountdown(durationInMinutes * 60);
+        electionsStarted = true;
+    }
 }
