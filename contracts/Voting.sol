@@ -36,7 +36,7 @@ contract Voting {
     // Voting phase control
     uint public votingStartTime;
     uint public votingDuration; // in seconds
-    bool private isVotingActive = false; // Private variable to track voting status
+    bool public isVotingActive = false; // Private variable to track voting status
     uint public time; // test UNIX timestamp
 	
 
@@ -61,6 +61,10 @@ contract Voting {
 
     function getCallerAddress() public view returns (address) {
         return msg.sender;
+    }
+
+    function getIsVotingActive() public view returns (bool) {
+        return isVotingActive;
     }
 
     function getOwner() public view returns (address) {
@@ -119,13 +123,21 @@ contract Voting {
         candidatesCount++;
     }
 
-    function userVoted(bytes32 _key) public view returns (bool){
+    function keyVoted(bytes32 _key) public view returns (bool){
         for (uint i = 0; i < voters.length; i++) {
             if (voters[i].key == _key && voters[i].hasVoted == true) {
                 return true;
             }
         }
         return false;
+    }
+
+    function getUsersKey() public view returns (bytes32){
+        for (uint i = 0; i < voters.length; i++) {
+            if (voters[i].voterAddress == msg.sender) {
+                return voters[i].key;
+            }
+        }
     }
 
     function candidateExists(string memory _name) public view returns (bool){
@@ -142,7 +154,7 @@ contract Voting {
     function vote(string memory _candidateName, bytes32 _key) public {
         require(block.timestamp >= votingStartTime && block.timestamp <= votingStartTime + votingDuration, "Voting is not active");
         //require(!voters[msg.sender], "Already voted");
-        require(!userVoted(_key), "Already voted");
+        require(!keyVoted(_key), "Already voted");
         require(candidateExists(_candidateName), "Invalid candidate");
 
         // Marks the key as voted
