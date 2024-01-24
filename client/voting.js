@@ -103,10 +103,6 @@ async function getUsersKey(){
     return userKey;
 }
 
-export const isOwner = async () => {
-    const ownerAddress = await contract.methods.getCandidateNames().call();
-}
-
 export async function checkIsVotingActive(){
     const isVotingActive = await contract.methods.getIsVotingActive().call();
     if (isVotingActive){

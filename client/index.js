@@ -63,10 +63,7 @@ async function getOracleKey() {
 export const getAndSetOracleKey = async () => {
     try {
         const oracleKey = await getOracleKey();
-
         document.getElementById('statekey').value = oracleKey;
-
-        console.log('Oracle Key set as input:', oracleKey);
     } catch (error) {
         console.error('Error during setting the oracleKey as input:', error);
     }
