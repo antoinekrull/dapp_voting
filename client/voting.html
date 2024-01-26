@@ -12,7 +12,7 @@
         <!--containes the candidates, is filled by displayCandidates()-->
         <div id="candidates" class="candidate-container"></div>
 
-        <button onclick="startElections()">Start Elections</button>
+        <button id="election-button" onclick="startElections()">Start Elections</button>
         <button onclick="checkIsVotingActive()">isvotingactive</button>
         <div id="selection-container">
             <h3>Selected Candidate:</h3>
@@ -30,6 +30,9 @@
     </div>
 
     <script type="module">
+        import {isOwner} from "./voting.js";
+        window.isOwner = isOwner;
+        isOwner();
         import {displayCandidates} from "./voting.js";
         window.displayCandidates = displayCandidates;
         displayCandidates();

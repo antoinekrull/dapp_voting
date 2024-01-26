@@ -110,3 +110,10 @@ export async function checkIsVotingActive(){
         electionsStarted = true;
     }
 }
+
+export async function isOwner(){
+    const ownerAddress = await contract.methods.getOwner().call();
+    if (userAccount.toLowerCase() != ownerAddress.toLowerCase()){
+        document.getElementById('election-button').style.display = 'none';
+    }
+}
