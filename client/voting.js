@@ -105,7 +105,7 @@ async function getUsersKey(){
 
 export async function checkIsVotingActive(){
     const isVotingActive = await contract.methods.getIsVotingActive().call();
-    if (isVotingActive){
+    if (isVotingActive && !electionsStarted){
         showCountdown(durationInMinutes * 60);
         electionsStarted = true;
     }
