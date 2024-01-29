@@ -2,7 +2,7 @@ import Web3 from 'web3';
 import contractInfo from '../build/contracts/Voting.json';
 let userAccount;
 let votedCandidate;
-const durationInMinutes = 1;
+const durationInMinutes = 2;
 ethereum.request({ method: 'eth_requestAccounts' })
   .then(accounts => {
     // Handle the user's accounts
@@ -24,10 +24,9 @@ var electionsStarted = false; // Variable to track whether elections have starte
 
 export async function startElections() {
     const startTimestamp = Math.floor(Date.now() / 1000); // current time in seconds
-    const endTimestamp = startTimestamp + (durationInMinutes * 60);
 
     electionsStarted = true;
-    contract.methods.setVotingPhase(startTimestamp, endTimestamp).send({ from: userAccount });
+    contract.methods.setVotingPhase(startTimestamp, durationInMinutes * 60).send({ from: userAccount });
     document.getElementById("election-status").style.display = "none"; // Hide the status message
     showCountdown(durationInMinutes * 60);
 }
