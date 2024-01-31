@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: CC-BY-NC-SA-4.0
-pragma solidity 0.5.2;
+pragma solidity 0.8.0;
 
-pragma experimental ABIEncoderV2; // Enable the new ABI encoder
+//pragma experimental ABIEncoderV2; // Enable the new ABI encoder
 
 import "./MockOracle.sol";
 
@@ -36,7 +36,7 @@ contract Voting {
     // Voting phase control
     uint public votingStartTime;
     uint public votingDuration; // in seconds
-    bool public isVotingActive = false; // Private variable to track voting status
+    bool public isVotingActive = true; // Private variable to track voting status
     uint public time; // test UNIX timestamp
 	
 
@@ -44,7 +44,7 @@ contract Voting {
     uint public candidatesCount = 0;
 
     // Constructor
-    constructor(address oracleAddress) public{
+    constructor(address oracleAddress) {
 
         oracle = MockOracle(oracleAddress);
         owner = msg.sender; // Set the contract deployer as the owner
@@ -207,4 +207,5 @@ contract Voting {
     }
 
 }
+
 
